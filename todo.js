@@ -1,4 +1,4 @@
-const tasks = [];
+let tasks = [];
 //All the tasks added in the todo list 
 const taskList = document.getElementById('list');
 const addTaskInput = document.getElementById('add');
@@ -8,9 +8,34 @@ function renderList () {}
 
 function markTaskAsComplete (taskId) {}
 
-function deleteTask (taskId) {}
+function deleteTask (taskID) {
+    //Fetch task using the taskId and then delete that task
+    //MY APPROACH
+    // for(let task in tasks) {
+    //     if(tasks[task].id === taskID) {
+    //         tasks.splice(task, 1);
+    //     }
+    // }
+    //CN APPROACH
+    const newTasks = tasks.filter((task) => {
+        return task.id !== taskID;
+    });
+    tasks = newTasks;
+    renderList();
+    showNotification("Task deleted successfully.");
+}
 
-function addTask (task) {}
+function addTask (task) {
+    //If task is present, add task to the tasks array 
+    if(tasks) {
+        tasks.push(task);
+        renderList();
+        showNotification("Task added successfully.");
+        return;
+    }
+
+    showNotification("Task cannot be added.");
+}
 
 function showNotification(text) {
     alert(text);
