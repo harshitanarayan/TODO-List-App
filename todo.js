@@ -6,7 +6,28 @@ const tasksCounter = document.getElementById('tasks-counter');
 
 function renderList () {}
 
-function markTaskAsComplete (taskId) {}
+//Toggle task means changing the value to the opposite of what is currently present i.e done: !done (if donen false then change it to true)
+function toggleTask (taskID) {
+    // tasks.map((task) => {
+    //     if(task.id === taskID) {
+    //         task.done = !done;
+    //     }
+    // });
+    const task = tasks.filter((task) => {
+        return task.id === taskID;
+    });
+
+    if(task.length > 0) {
+       const currentTask = task[0];
+       
+       currentTask.done = !currentTask.done;
+       renderList();
+       showNotification("Task toggled successfully!");
+       return;
+    }
+
+    showNotification("Could not toggle the task.");
+}
 
 function deleteTask (taskID) {
     //Fetch task using the taskId and then delete that task
@@ -22,7 +43,7 @@ function deleteTask (taskID) {
     });
     tasks = newTasks;
     renderList();
-    showNotification("Task deleted successfully.");
+    showNotification("Task deleted successfully!");
 }
 
 function addTask (task) {
@@ -30,7 +51,7 @@ function addTask (task) {
     if(tasks) {
         tasks.push(task);
         renderList();
-        showNotification("Task added successfully.");
+        showNotification("Task added successfully!");
         return;
     }
 
