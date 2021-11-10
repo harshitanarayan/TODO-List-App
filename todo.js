@@ -3,13 +3,38 @@ let tasks = [];
 const tasksList = document.getElementById('list');
 const addTaskInput = document.getElementById('add');
 const tasksCounter = document.getElementById('tasks-counter');
+const url = "https://jsonplaceholder.typicode.com/todos";
+
+
+async function fetchTODOs() {
+    //GET request
+    // fetch(url)             //returns a promise 
+    //   .then(response => {
+    //       return response.json();   //.json() converts the response to JSON and returns a promise
+    //   }).then((data) => {
+    //     tasks = data.slice(0, 10);
+    //     renderList();
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    try{
+        const response = await fetch(url);
+        const data = await response.json();
+        tasks = data.slice(0, 10);
+        renderList();
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 function addTaskToDOM(task) {
     //li tag created corresponding to each task
     const li = document.createElement('li');
     li.innerHTML = `
-        <input type="checkbox" id="${task.id}" ${task.done ? 'checked' : ''} class="custom-checkbox">
-        <label for="${task.id}"> ${task.text} </label>
+        <input type="checkbox" id="${task.id}" ${task.completed ? 'checked' : ''} class="custom-checkbox">
+        <label for="${task.id}"> ${task.title} </label>
         <img src="https://cdn-icons.flaticon.com/png/128/484/premium/484611.png?token=exp=1636504146~hmac=82ec53622be1af5d91cd61681e7fb5e3" class="delete" data-id="${task.id}" />`; //data-id is required in order to know which task needs to be deleted
 
         //append list item to the tasksList ul 
@@ -37,13 +62,13 @@ function toggleTask (taskID) {
     //     }
     // });
     const task = tasks.filter((task) => {
-        return task.id === taskID;
+        return task.id === Number(taskID);
     });
 
     if(task.length > 0) {
        const currentTask = task[0];
        
-       currentTask.done = !currentTask.done;
+       currentTask.completed = !currentTask.completed;
        renderList();
        showNotification("Task toggled successfully!");
        return;
@@ -62,7 +87,7 @@ function deleteTask (taskID) {
     // }
     //CN APPROACH
     const newTasks = tasks.filter((task) => {
-        return task.id !== taskID;
+        return task.id !== Number(taskID);
     });
     tasks = newTasks;
     renderList();
@@ -72,6 +97,21 @@ function deleteTask (taskID) {
 function addTask (task) {
     //If task is present, add task to the tasks array 
     if(tasks) {
+        //POST REQUEST
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-type': 'application/json; charset=UTF-8',
+        //     },
+        //     body: JSON.stringify(task)
+        // }).then(response => response.json())
+        //     .then(data => {
+        //         tasks.push(task);
+        //         renderList();
+        //         showNotification("Task added successfully!");
+        //     }).catch(error) {
+        //         console.log(error);
+        //     }
         tasks.push(task);
         renderList();
         showNotification("Task added successfully!");
@@ -125,6 +165,7 @@ function handleClickListener(event) {
 }
 
 function initialiseApp() {
+    fetchTODOs();
     addTaskInput.addEventListener('keypress', handleInputKeypress);
     //Event delegation
     document.addEventListener('click', handleClickListener);
