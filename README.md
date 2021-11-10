@@ -1,6 +1,6 @@
 # Todo list app
-A todo list app 
-Contains some dummy todos fetched from JSONPlacefolder API 
+- A todo list app 
+- Contains some dummy todos fetched from JSONPlacefolder API 
 
 ![alt text](appImage.png)
 
