@@ -1,10 +1,33 @@
 let tasks = [];
 //All the tasks added in the todo list 
-const taskList = document.getElementById('list');
+const tasksList = document.getElementById('list');
 const addTaskInput = document.getElementById('add');
 const tasksCounter = document.getElementById('tasks-counter');
 
-function renderList () {}
+function addTaskToDOM(task) {
+    //li tag created corresponding to each task
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <input type="checkbox" id="${task.id}" ${task.done ? 'checked' : ''} class="custom-checkbox">
+        <label for="${task.id}"> ${task.text} </label>
+        <img src="https://cdn-icons.flaticon.com/png/128/484/premium/484611.png?token=exp=1636504146~hmac=82ec53622be1af5d91cd61681e7fb5e3" class="delete" data-id="${task.id}" />`; //data-id is required in order to know which task needs to be deleted
+
+        //append list item to the tasksList ul 
+        tasksList.appendChild(li);
+}
+
+
+function renderList () {
+    //Remove the entire list from the screen
+    tasksList.innerHTML = "";
+
+    //Take each task and append it to the list
+    for(let i = 0; i < tasks.length; i++) {
+        addTaskToDOM(tasks[i]);
+    }
+
+    tasksCounter.innerHTML = tasks.length;
+}
 
 //Toggle task means changing the value to the opposite of what is currently present i.e done: !done (if donen false then change it to true)
 function toggleTask (taskID) {
