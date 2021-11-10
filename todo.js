@@ -61,10 +61,11 @@ var TodoListApp = (function() {
         //         task.done = !done;
         //     }
         // });
+        console.log(taskID);
         const task = tasks.filter((task) => {
-            return task.id === Number(taskID);
+            return Number(task.id) === Number(taskID);
         });
-
+        console.log(task);
         if(task.length > 0) {
         const currentTask = task[0];
         
@@ -87,7 +88,7 @@ var TodoListApp = (function() {
         // }
         //CN APPROACH
         const newTasks = tasks.filter((task) => {
-            return task.id !== Number(taskID);
+            return Number(task.id) !== Number(taskID);
         });
         tasks = newTasks;
         renderList();
@@ -96,7 +97,7 @@ var TodoListApp = (function() {
 
     function addTask (task) {
         //If task is present, add task to the tasks array 
-        if(tasks) {
+        if(task) {
             //POST REQUEST
             // fetch(url, {
             //     method: 'POST',
@@ -139,9 +140,9 @@ var TodoListApp = (function() {
 
             //Create the task object
             const task = {
-                text, //shorthand for text: text
+                title: text, //shorthand for text: text
                 id : Date.now().toString(),
-                done: false
+                completed: false
             }
 
             //Empty the input box after the task object is created
@@ -165,11 +166,13 @@ var TodoListApp = (function() {
     }
 
     function initialiseApp() {
-        fetchTODOs();
+        //fetchTODOs();
         addTaskInput.addEventListener('keypress', handleInputKeypress);
         //Event delegation
         document.addEventListener('click', handleClickListener);
     } 
+
+    initialiseApp();
 
     return {
         initialise: initialiseApp
