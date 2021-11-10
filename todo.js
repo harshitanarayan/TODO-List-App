@@ -90,7 +90,6 @@ function handleInputKeypress(event) {
     if(event.key === 'Enter') {
         //Collect the task 
         const text = event.target.value;
-        console.log(text);
         
         //Show notification if the user pressed enter without adding task
         if(!text) {
@@ -111,4 +110,24 @@ function handleInputKeypress(event) {
     }
 }
 
-addTaskInput.addEventListener('keypress', handleInputKeypress);
+function handleClickListener(event) {
+    const target = event.target;
+    
+    if(target.className === 'delete') {
+        const taskID = target.dataset.id;
+        deleteTask(taskID);
+        return;
+    } else if(target.className === 'custom-checkbox') {
+        const taskID = target.id;
+        toggleTask(taskID);
+        return;
+    }
+}
+
+function initialiseApp() {
+    addTaskInput.addEventListener('keypress', handleInputKeypress);
+    //Event delegation
+    document.addEventListener('click', handleClickListener);
+} 
+
+initialiseApp();
